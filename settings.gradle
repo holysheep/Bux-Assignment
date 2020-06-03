@@ -1,0 +1,3 @@
+rootProject.name = "BuxStockingTracking"
+include ':app'
+include ':core'
