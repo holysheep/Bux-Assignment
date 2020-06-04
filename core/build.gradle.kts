@@ -30,10 +30,11 @@ dependencies {
 
     api(Libraries.retrofit)
     api(Libraries.retrofitMoshiConverter)
-//    kapt(Libraries.moshiCodeGen)
-//    implementation(Libraries.moshi)
-    implementation(Libraries.scarlet)
-    implementation(Libraries.scarletWebSocket)
-    implementation(Libraries.scarletLifecycle)
-    implementation(Libraries.scarletMessageAdapter)
+    api(Libraries.moshi)
+    api(Libraries.moshiCodeGen)
+
+    api(Libraries.scarlet)
+    api(Libraries.scarletWebSocket)
+    api(Libraries.scarletLifecycle)
+    api(Libraries.scarletMessageAdapter)
 }

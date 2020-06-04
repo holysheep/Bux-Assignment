@@ -24,5 +24,6 @@ object Versions {
     const val okHttpVersion = "4.6.0"
     const val retrofit = "2.9.0"
     const val moshi = "1.9.2"
+    const val moshiCodeGen = "1.6.0"
     const val scarlet = "0.1.9"
 }

@@ -9,8 +9,8 @@ android {
     defaultConfig {
         minSdkVersion AndroidVersions.minSdk
         targetSdkVersion AndroidVersions.targetSdk
-        versionCode 9
-        versionName "1.0.8"
+        versionCode 1
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -20,6 +20,12 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    buildTypes.forEach {
+        it.buildConfigField('String', 'API_BASE_URL', '"https://api.beta.getbux.com"')
+        it.buildConfigField('String', 'WS_BASE_URL', '"https://rtf.beta.getbux.com"')
+        it.buildConfigField('String', 'TOKEN', getPropsAuthToken())
     }
 
     compileOptions {
@@ -33,7 +39,25 @@ android {
         getByName("androidTest").java.srcDirs("src/androidTest/kotlin")
     }
 
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+
+def getPropsAuthToken() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("authToken")
 }

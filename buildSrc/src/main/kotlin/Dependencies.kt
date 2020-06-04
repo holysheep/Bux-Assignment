@@ -33,14 +33,18 @@ object Libraries {
     const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${Versions.okHttpVersion}"
 
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
-    const val moshi = "com.squareup.moshi:moshi::${Versions.moshi}"
-    const val moshiCodeGen = "com.squareup.moshi:moshi::${Versions.moshi}"
     const val retrofitMoshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
+    const val moshi = "com.squareup.moshi:moshi:${Versions.moshi}"
+    const val moshiCodeGen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshiCodeGen}"
 
-    const val scarlet = "com.squareup.retrofit2:converter-moshi:${Versions.scarlet}"
-    const val scarletWebSocket = "com.squareup.retrofit2:converter-moshi:${Versions.scarlet}"
-    const val scarletLifecycle = "com.squareup.retrofit2:converter-moshi:${Versions.scarlet}"
-    const val scarletMessageAdapter = "com.squareup.retrofit2:converter-moshi:${Versions.scarlet}"
+    // Scarlet
+    const val scarlet = "com.tinder.scarlet:scarlet:${Versions.scarlet}"
+    const val scarletWebSocket =
+        "com.tinder.scarlet:websocket-okhttp:${Versions.scarlet}"
+    const val scarletMessageAdapter =
+        "com.tinder.scarlet:message-adapter-moshi:${Versions.scarlet}"
+    const val scarletLifecycle =
+        "com.tinder.scarlet:lifecycle-android:${Versions.scarlet}"
 
     // Test todo
 }

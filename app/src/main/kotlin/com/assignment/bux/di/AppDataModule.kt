@@ -1,3 +1,9 @@
 package com.assignment.bux.di
 
-val appDataModule = emptyList<Unit>()
+import com.assignment.core.data.di.dataModule
+import com.assignment.core.data.di.networkModule
+
+val appDataModule = listOf {
+    networkModule
+    dataModule
+}
