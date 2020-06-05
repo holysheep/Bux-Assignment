@@ -12,14 +12,13 @@ import com.assignment.core.data.Constants.HEADER_ACCEPT_LANGUAGE
 import com.assignment.core.data.Constants.HEADER_AUTH
 import com.assignment.core.data.Constants.MIME_TYPE
 import com.assignment.core.data.Constants.TOKEN_ACCESS
-import com.assignment.core.data.service.SocketService
+import com.assignment.core.data.utils.FlowStreamAdapter
 import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
 import com.tinder.scarlet.Lifecycle
 import com.tinder.scarlet.Scarlet
 import com.tinder.scarlet.lifecycle.android.AndroidLifecycle
 import com.tinder.scarlet.messageadapter.moshi.MoshiMessageAdapter
-import com.tinder.scarlet.retry.BackoffStrategy
 import com.tinder.scarlet.retry.ExponentialWithJitterBackoffStrategy
 import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
 import okhttp3.OkHttpClient
@@ -29,11 +28,26 @@ import retrofit2.Retrofit
 
 val networkModule = module {
     single { provideOkHttpClient() }
-    single { provideRetrofit(okHttpClient = get()) }
+    single {
+        provideRetrofit(
+            okHttpClient = get()
+        )
+    }
     single { provideMoshi() }
 
-    single { provideScarlet(okHttpClient = get(), lifecycle = get(), backoffStrategy = get()) }
-    single { provideAndroidLifecycle(application = get()) }
+    single {
+        provideScarlet(
+            moshi = get(),
+            okHttpClient = get(),
+            lifecycle = get(),
+            backoffStrategy = get()
+        )
+    }
+    single {
+        provideAndroidLifecycle(
+            application = get()
+        )
+    }
     single { provideBackOffStrategy() }
 }
 
@@ -66,18 +80,20 @@ private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
 }
 
 private fun provideScarlet(
+    moshi: Moshi,
     okHttpClient: OkHttpClient,
     lifecycle: Lifecycle,
-    backoffStrategy: BackoffStrategy
-): SocketService {
+    backoffStrategy: ExponentialWithJitterBackoffStrategy
+): Scarlet.Builder {
     return Scarlet.Builder()
-        .webSocketFactory(okHttpClient.newWebSocketFactory(BuildConfig.WS_BASE_URL + Constants.WS_PATH))
+        .webSocketFactory(
+            okHttpClient
+                .newWebSocketFactory(BuildConfig.WS_BASE_URL + Constants.WS_PATH)
+        )
         .lifecycle(lifecycle)
-        .addMessageAdapterFactory(MoshiMessageAdapter.Factory())
-//        .addStreamAdapterFactory(RxJava2StreamAdapterFactory()) // todo find out if I need this
+        .addMessageAdapterFactory(MoshiMessageAdapter.Factory(moshi))
+        .addStreamAdapterFactory(FlowStreamAdapter.Factory)
         .backoffStrategy(backoffStrategy)
-        .build()
-        .create()
 }
 
 private fun provideAndroidLifecycle(application: Application): Lifecycle {

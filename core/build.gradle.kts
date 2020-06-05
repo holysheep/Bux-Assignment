@@ -18,6 +18,8 @@ dependencies {
     api(Libraries.koinScope)
     api(Libraries.koinAndroidExt)
 
+    api(Libraries.lifecycleCommon)
+    api(Libraries.lifecycleCommonJava8)
     api(Libraries.lifecycleViewModel)
     api(Libraries.lifecycleExtensions)
     api(Libraries.lifecycleCompiler)
@@ -31,10 +33,12 @@ dependencies {
     api(Libraries.retrofit)
     api(Libraries.retrofitMoshiConverter)
     api(Libraries.moshi)
-    api(Libraries.moshiCodeGen)
+    api(Libraries.moshiKotlin)
+    api(Libraries.moshiAdapters)
 
     api(Libraries.scarlet)
     api(Libraries.scarletWebSocket)
     api(Libraries.scarletLifecycle)
     api(Libraries.scarletMessageAdapter)
+    api(Libraries.scarletAdapterCoroutine)
 }

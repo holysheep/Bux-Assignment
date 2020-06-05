@@ -1,3 +1,5 @@
 package com.assignment.bux.di
 
-val appDomainModule =  emptyList<Unit>()
+import com.assignment.core.domain.di.domainModule
+
+val appDomainModule = listOf(domainModule)

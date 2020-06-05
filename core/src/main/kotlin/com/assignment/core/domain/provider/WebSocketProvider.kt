@@ -5,8 +5,9 @@ import com.tinder.scarlet.WebSocket
 import kotlinx.coroutines.flow.Flow
 
 internal interface WebSocketProvider {
-    fun connect()
-    fun observeWebSocketConnection() : Flow<WebSocket.Event>
-    fun subscribeToProduct(toProductIdentifier: String,
-                           fromProductIdentifier: String?): Flow<RealtimeUpdateEvent>
+    fun observeWebSocketConnection(): Flow<WebSocket.Event>
+    fun subscribeToProduct(
+        toProductIdentifier: String,
+        fromProductIdentifier: String?
+    ): Flow<RealtimeUpdateEvent>
 }

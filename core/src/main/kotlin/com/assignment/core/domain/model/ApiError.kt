@@ -1,7 +1,7 @@
 package com.assignment.core.domain.model
 
 // todo: check possible exceptions and reformat accordingly to real errors
-sealed class ApiError {
+internal sealed class ApiError {
     object AuthError: ApiError()
     object SocketClosedError: ApiError()
     object UnexpectedError: ApiError()

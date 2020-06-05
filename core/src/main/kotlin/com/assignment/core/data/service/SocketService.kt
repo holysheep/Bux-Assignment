@@ -16,7 +16,7 @@ internal interface SocketService {
     fun observeWebSocketConnection(): Flow<WebSocket.Event>
 
     @Send
-    fun changeSubscriptionProduct(subscribe: SubscribeMessage)
+    fun changeSubscriptionProduct(subscribe: SubscribeMessage) : Boolean
 
     @Receive
     fun observeRealtimeEvent(): Flow<RealtimeUpdateEvent>

@@ -14,6 +14,8 @@ object Libraries {
     const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutinesVersion}"
 
     // Lifecycle
+    const val lifecycleCommon = "androidx.lifecycle:lifecycle-common:${Versions.lifecycleVersion}"
+    const val lifecycleCommonJava8 = "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycleVersion}"
     const val lifecycleExtensions = "androidx.lifecycle:lifecycle-extensions:${Versions.lifecycleVersion}"
     const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleVersion}"
     const val lifecycleCompiler = "androidx.lifecycle:lifecycle-compiler:${Versions.lifecycleVersion}"
@@ -35,7 +37,9 @@ object Libraries {
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     const val retrofitMoshiConverter = "com.squareup.retrofit2:converter-moshi:${Versions.retrofit}"
     const val moshi = "com.squareup.moshi:moshi:${Versions.moshi}"
-    const val moshiCodeGen = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.moshiCodeGen}"
+    const val moshiKotlin = "com.squareup.moshi:moshi-kotlin:${Versions.moshi}"
+    const val moshiAdapters = "com.squareup.moshi:moshi-adapters:${Versions.moshi}"
+
 
     // Scarlet
     const val scarlet = "com.tinder.scarlet:scarlet:${Versions.scarlet}"
@@ -45,6 +49,8 @@ object Libraries {
         "com.tinder.scarlet:message-adapter-moshi:${Versions.scarlet}"
     const val scarletLifecycle =
         "com.tinder.scarlet:lifecycle-android:${Versions.scarlet}"
+    const val scarletAdapterCoroutine =
+        "com.tinder.scarlet:stream-adapter-coroutines:${Versions.scarlet}"
 
     // Test todo
 }

@@ -5,14 +5,14 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 internal data class ConnectResult(
-    @Json(name = "t") val eventType: EventType,
-    @Json(name = "body") val body: EventBody?
+    @Json(name = "t") val eventType: EventType?,
+    val body: EventBody?
 )
 
 @JsonClass(generateAdapter = true)
 internal data class EventBody(
     @Json(name = "developerMessage") val message: String?,
-    @Json(name = "errorCode") val errorCode: String?
+    val errorCode: String?
 )
 
 internal enum class EventType {

@@ -12,6 +12,8 @@ internal object Constants {
     const val MIME_TYPE = "application/json"
     const val ACCEPT_LANGUAGE = "nl-NL,en;q=0.8"
 
+    // Retry
     const val BACKOFF_DURATION_BASE = 5000L
     const val BACKOFF_DURATION_MAX = 5000L
+    const val RETRY_ATTEMPTS_AMOUNT = 3
 }
