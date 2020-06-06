@@ -21,6 +21,7 @@ dependencies {
     api(Libraries.lifecycleCommon)
     api(Libraries.lifecycleCommonJava8)
     api(Libraries.lifecycleViewModel)
+    api(Libraries.lifecycleLiveData)
     api(Libraries.lifecycleExtensions)
     api(Libraries.lifecycleCompiler)
 
