@@ -4,9 +4,13 @@ import com.assignment.core.domain.model.NetworkResult
 import com.assignment.core.domain.model.retreive.TradingProduct
 import com.assignment.core.domain.repository.TradingProductRepository
 
-internal class GetProductUseCase(repository: TradingProductRepository) :
-    UseCase.RetrieveUseCase<TradingProduct> {
-    override suspend fun execute(): NetworkResult<TradingProduct?> {
-        TODO("Not yet implemented")
+internal class GetProductUseCase(private val repository: TradingProductRepository) :
+    UseCase.RetrieveParamsUseCase<GetProductUseCase.Params, TradingProduct> {
+
+    override suspend fun execute(params: Params): NetworkResult<TradingProduct> {
+//      todo  if (params.productId) is valid
+       return repository.getProductById(params.productId)
     }
+
+    class Params(val productId: String) : UseCase.Params()
 }
