@@ -1,13 +1,13 @@
 package com.assignment.core.data.provider
 
-//import com.assignment.core.domain.model.subscribe.TradingProductAction
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.assignment.core.data.Constants
 import com.assignment.core.data.service.SocketService
+import com.assignment.core.domain.model.ApiError
+import com.assignment.core.domain.model.NetworkResult
 import com.assignment.core.domain.model.connect.ConnectResult
 import com.assignment.core.domain.model.connect.EventType
 import com.assignment.core.domain.model.subscribe.SubscribeMessage
@@ -55,8 +55,24 @@ internal class ScarletSocketProvider(
         }
     }
 
-    override fun observeWebSocketConnection(): Flow<WebSocket.Event> =
-        socketService.observeWebSocketConnection()
+    override fun observeWebSocketConnection(): Flow<NetworkResult<WebSocket.Event>> {
+        return flow {
+            socketService
+                .observeWebSocketConnection()
+                .collectLatest {
+                    when (it) {
+                        // todo: success state
+                        is WebSocket.Event.OnConnectionClosed -> {
+                            emit(NetworkResult.Error(ApiError.SocketClosedError))
+                        }
+                        is WebSocket.Event.OnConnectionFailed -> {
+                            emit(NetworkResult.Error(ApiError.SocketClosedError))
+                        }
+                        else -> emit(NetworkResult.Success(null))
+                    }
+                }
+        }
+    }
 
     private fun connect(): Flow<ConnectResult> =
         socketService.connectToBuxFeed()
@@ -64,12 +80,11 @@ internal class ScarletSocketProvider(
     override fun subscribeToProduct(
         toProductIdentifier: String,
         fromProductIdentifier: String?
-    ): Flow<RealtimeUpdateEvent> {
+    ): Flow<NetworkResult<RealtimeUpdateEvent>> {
         return flow {
+            emit(NetworkResult.Loading)
             connect()
-                .catch { e ->
-                    // todo: handle errors
-                }
+                .catch { e -> emit(NetworkResult.Error(ApiError.NetworkError(e))) }
                 .filterNot { it.eventType == null } // ignore any other event
                 .collectLatest { connectResult ->
                     when (connectResult.eventType) {
@@ -80,9 +95,12 @@ internal class ScarletSocketProvider(
                                         .observeRealtimeEvent()
 //                                        .buffer() // todo: how often this will trigger?
                                         .filter { it.type == UpdateEventType.QUOTE_EVENT }
-                                        .collectLatest { emit(it) }
+                                        .collectLatest {
+                                            emit(NetworkResult.Success(it))
+                                        }
                                 } else {
                                     // todo: handle not subscribe
+                                    emit(NetworkResult.Error())
                                 }
                             }
                         }
@@ -91,6 +109,7 @@ internal class ScarletSocketProvider(
                             retryConnection(times = Constants.RETRY_ATTEMPTS_AMOUNT) {
                                 subscribeToProduct(toProductIdentifier, fromProductIdentifier)
                             }
+                            emit(NetworkResult.Error(ApiError.UnexpectedError))
                         }
                     }
                 }
