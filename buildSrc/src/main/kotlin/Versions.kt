@@ -19,7 +19,7 @@ object Versions {
 
     const val coroutinesVersion = "1.3.7"
     const val lifecycleVersion = "2.2.0"
-    const val navigationVersion = "2.3.0-alpha04"
+    const val navigationVersion = "2.3.0-beta01"
     const val koinVersion = "2.1.5"
 
     const val okHttpVersion = "4.6.0"
