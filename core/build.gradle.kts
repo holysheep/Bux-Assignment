@@ -5,6 +5,8 @@ plugins {
 apply("$rootDir/common.gradle")
 
 dependencies {
+    implementation(project(Modules.navigation))
+
     api(CoreLibraries.kotlin)
     api(SupportLibraries.core)
     api(SupportLibraries.appCompat)
@@ -24,9 +26,6 @@ dependencies {
     api(Libraries.lifecycleLiveData)
     api(Libraries.lifecycleExtensions)
     api(Libraries.lifecycleCompiler)
-
-    api(Libraries.navigation)
-    api(Libraries.navigationUi)
 
     api(Libraries.okHttp)
     api(Libraries.loggingInterceptor)
