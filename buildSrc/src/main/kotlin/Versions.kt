@@ -15,6 +15,7 @@ object Versions {
     const val coreVersion = "1.2.0"
     const val appCompatVersion = "1.1.0"
     const val constraintVersion = "1.1.3"
+    const val databinding = "2.3.0"
 
     const val coroutinesVersion = "1.3.7"
     const val lifecycleVersion = "2.2.0"

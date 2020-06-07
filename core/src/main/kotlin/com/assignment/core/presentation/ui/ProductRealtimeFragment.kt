@@ -5,18 +5,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.assignment.core.R
+import androidx.lifecycle.Observer
+import com.assignment.core.databinding.FragmentProductRealtimeBinding
 import com.assignment.core.presentation.viewmodel.ProductRealtimeViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class ProductRealtimeFragment : Fragment() {
-
-    private val productViewModel: ProductRealtimeViewModel by viewModel()
+    private val viewModel: ProductRealtimeViewModel by stateViewModel()
+    private lateinit var binding: FragmentProductRealtimeBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_product_realtime, container, false)
+        binding = FragmentProductRealtimeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        with(viewModel) {
+//            showProduct(productId = args.productId) // todo: pass args
+
+            tradingProduct.observe(viewLifecycleOwner,
+                Observer { product ->
+                    with(binding) {
+                        subtitle.text = product.title
+                        currency.text = product.currentPrice.currency
+                        price.text = product.currentPrice.amount.toPlainString() // format
+                    }
+                })
+
+            webSocketState.observe(viewLifecycleOwner,
+                Observer { result -> })
+        }
     }
 }

@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/productListFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
+        android:id="@+id/productListFragment"
         android:name="com.assignment.core.presentation.ui.ProductListFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_product_list">
+        android:label="@string/list_fragment_label">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/toProduct"
+            app:destination="@id/productRealtimeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
+        android:id="@+id/productRealtimeFragment"
         android:name="com.assignment.core.presentation.ui.ProductRealtimeFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_product_realtime">
-
+        android:label="@string/product_fragment_label">
+        <argument
+            android:name="productId"
+            app:argType="string" />
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/toProductList"
+            app:destination="@id/productListFragment" />
     </fragment>
 </navigation>

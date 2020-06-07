@@ -25,6 +25,8 @@ object Libraries {
     const val navigation = "androidx.navigation:navigation-fragment-ktx:${Versions.navigationVersion}"
     const val navigationUi = "androidx.navigation:navigation-ui-ktx:${Versions.navigationVersion}"
 
+    const val databinding = "com.android.databinding:compiler:${Versions.databinding}"
+
     // DI
     const val koin = "org.koin:koin-core:${Versions.koinVersion}"
     const val koinScope = "org.koin:koin-androidx-scope:${Versions.koinVersion}"

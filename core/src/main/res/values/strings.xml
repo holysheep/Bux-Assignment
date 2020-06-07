@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="server_error">Server is not responding. Try again later.</string>
+    <string name="server_error__message_400">Bad request (invalid request argument)</string>
+    <string name="server_error__message_401">Unauthenticated</string>
+    <string name="server_error__message_403">Forbidden</string>
+    <string name="server_error__message_404">Product not found. Try again later.</string>
+    <string name="server_error__message_500">Internal error.</string>
+    <string name="server_error__message_503">Service unavailable. Try again later.</string>
+    <string name="server_error__message_504">Gateway timeout. Try again later.</string>
+    <string name="server_error__message_unknown">Unknown server error.</string>
+
+    <string name="network_error">Connection to server is unavailable.</string>
+    <string name="network_socket_error">Connection with subscription is broken.</string>
+    <string name="subscription_error">Subscription to product failed. Try again.</string>
+
+    <string name="auth_token_error">Access Token is not valid or has expired.</string>
+    <string name="auth_error">Authorization problem.</string>
+    <string name="permission_error">You do not have sufficient permissions to perform this action.</string>
+    <string name="unknown_error">An unexpected error has occurred.</string>
+    <string name="product_realtime_title">Google Inc. - Class C Capital Stock</string>
+    <string name="product_realtime_currency">$</string>
+    <string name="product_realtime_price">894</string>
+    <string name="product_realtime_price_fracture">.61</string>
+    <string name="product_realtime_difference">+ 106.11 (20.43%)</string>
+    <string name="product_item_name">TESLA</string>
+</resources>

@@ -45,6 +45,12 @@ android {
                 "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
                 "-Xuse-experimental=kotlinx.coroutines.ObsoleteCoroutinesApi"]
     }
+
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 }
 
 def getPropsAuthToken() {
