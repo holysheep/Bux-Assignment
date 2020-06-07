@@ -10,9 +10,15 @@ internal data class ConnectResult(
 )
 
 @JsonClass(generateAdapter = true)
+internal data class ErrorMessage(
+    val message: String?,
+    val body: EventBody?
+)
+
+@JsonClass(generateAdapter = true)
 internal data class EventBody(
-    @Json(name = "developerMessage") val message: String?,
-    val errorCode: String?
+    val developerMessage: String?,
+    val errorCode: ErrorCodes
 )
 
 internal enum class EventType {
@@ -20,6 +26,14 @@ internal enum class EventType {
     CONNECTED,
     @Json(name = "connect.failed")
     FAILED
+}
+
+internal enum class ErrorCodes {
+    TRADING_002,
+    AUTH_007,
+    AUTH_014,
+    AUTH_009,
+    AUTH_008
 }
 
 

@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.assignment.core.R
 import com.assignment.core.databinding.FragmentProductListBinding
 import com.assignment.core.domain.model.retreive.TradingProduct
 import com.assignment.core.presentation.viewmodel.MainViewModel
@@ -30,7 +34,7 @@ internal class ProductListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listAdapter = ProductsAdapter(object : ProductAdapterListener {
+        val listAdapter = ProductsAdapter(object: ProductAdapterListener {
             override fun onProductClicked(product: TradingProduct) {
                 navigateToProduct(product.productId)
             }
@@ -59,7 +63,6 @@ internal class ProductListFragment : Fragment() {
     }
 
     private fun navigateToProduct(productId: String) {
-        // todo pass args
-//        findNavController().navigate(R.id.toProduct, bundleOf(Pair("id", productId)))
+        findNavController().navigate(R.id.toProduct, bundleOf(Pair("productId", productId)))
     }
 }

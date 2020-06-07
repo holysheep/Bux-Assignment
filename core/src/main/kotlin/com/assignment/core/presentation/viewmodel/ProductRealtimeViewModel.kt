@@ -1,5 +1,6 @@
 package com.assignment.core.presentation.viewmodel
 
+import android.content.res.Resources
 import androidx.lifecycle.*
 import com.assignment.core.domain.model.NetworkResult
 import com.assignment.core.domain.model.retreive.TradingProduct
@@ -7,13 +8,15 @@ import com.assignment.core.domain.usecase.GetProductUseCase
 import com.assignment.core.domain.usecase.ObserveProductUpdateUseCase
 import com.assignment.core.domain.usecase.ObserveWebsocketUseCase
 import com.assignment.core.presentation.base.BaseViewModel
+import com.assignment.core.presentation.utils.networkErrorString
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 internal class ProductRealtimeViewModel(
     private val getProductUseCase: GetProductUseCase,
     private val observeProductUpdateUseCase: ObserveProductUpdateUseCase,
-    observeWebsocketUseCase: ObserveWebsocketUseCase
+    observeWebsocketUseCase: ObserveWebsocketUseCase,
+    private val resources: Resources
 ) : BaseViewModel() {
 
     private val _tradingProduct = MutableLiveData<TradingProduct>()
@@ -33,8 +36,7 @@ internal class ProductRealtimeViewModel(
                     listenForProductUpdate(productId)
                 }
                 is NetworkResult.Error -> {
-                    // todo: handle errors
-                    error(result.error)
+                    errorValue.value = resources.getFormattedString(result.error)
                 }
             }
         }
@@ -53,8 +55,7 @@ internal class ProductRealtimeViewModel(
                             // update price + format
                         }
                         is NetworkResult.Error -> {
-                            // show error
-                            error(result.error)
+                            errorValue.value = resources.getFormattedString(result.error)
                         }
                     }
                 }

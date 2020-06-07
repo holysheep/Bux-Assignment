@@ -25,9 +25,12 @@ class ProductRealtimeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val productId = arguments?.getString("productId")
 
         with(viewModel) {
-//            showProduct(productId = args.productId) // todo: pass args
+            productId?.let {
+                showProduct(productId = productId)
+            }
 
             tradingProduct.observe(viewLifecycleOwner,
                 Observer { product ->

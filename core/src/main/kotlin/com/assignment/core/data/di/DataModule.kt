@@ -8,8 +8,13 @@ import com.assignment.core.domain.repository.TradingProductRepository
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
-val dataModule = module {
-    single<TradingProductRepository> { TradingProductRepositoryImpl(restService = get()) }
+val repositoryModule = module {
+    single<TradingProductRepository> {
+        TradingProductRepositoryImpl(
+            restService = get(),
+            moshi = get()
+        )
+    }
 }
 
 val webSocketModule = module {

@@ -6,7 +6,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.assignment.core.data.Constants
 import com.assignment.core.data.service.SocketService
-import com.assignment.core.domain.model.ApiError
+import com.assignment.core.domain.error.Failure
 import com.assignment.core.domain.model.NetworkResult
 import com.assignment.core.domain.model.connect.ConnectResult
 import com.assignment.core.domain.model.connect.EventType
@@ -17,6 +17,7 @@ import com.assignment.core.domain.provider.WebSocketProvider
 import com.tinder.scarlet.Scarlet
 import com.tinder.scarlet.WebSocket
 import com.tinder.scarlet.lifecycle.android.AndroidLifecycle
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import java.io.IOException
@@ -56,21 +57,22 @@ internal class ScarletSocketProvider(
     }
 
     override fun observeWebSocketConnection(): Flow<NetworkResult<WebSocket.Event>> {
-        return flow {
+        return callbackFlow {
             socketService
                 .observeWebSocketConnection()
                 .collectLatest {
                     when (it) {
-                        // todo: success state
                         is WebSocket.Event.OnConnectionClosed -> {
-                            emit(NetworkResult.Error(ApiError.SocketClosedError))
+                            offer(NetworkResult.Error(Failure.SocketConnectClosed(it.shutdownReason.reason)))
+                            close()
                         }
                         is WebSocket.Event.OnConnectionFailed -> {
-                            emit(NetworkResult.Error(ApiError.SocketClosedError))
+                            offer(NetworkResult.Error(Failure.SocketConnectFailed(it.throwable.cause)))
+                            close(it.throwable)
                         }
-                        else -> emit(NetworkResult.Success(null))
                     }
                 }
+            awaitClose()
         }
     }
 
@@ -84,7 +86,7 @@ internal class ScarletSocketProvider(
         return flow {
             emit(NetworkResult.Loading)
             connect()
-                .catch { e -> emit(NetworkResult.Error(ApiError.NetworkError(e))) }
+                .catch { e -> emit(NetworkResult.Error(Failure.ServerError(e))) }
                 .filterNot { it.eventType == null } // ignore any other event
                 .collectLatest { connectResult ->
                     when (connectResult.eventType) {
@@ -99,17 +101,15 @@ internal class ScarletSocketProvider(
                                             emit(NetworkResult.Success(it))
                                         }
                                 } else {
-                                    // todo: handle not subscribe
-                                    emit(NetworkResult.Error())
+                                    emit(NetworkResult.Error(Failure.SubscriptionFailed))
                                 }
                             }
                         }
                         EventType.FAILED -> {
-                            // todo: handle errors
+                            emit(NetworkResult.Error(Failure.ServerError()))
                             retryConnection(times = Constants.RETRY_ATTEMPTS_AMOUNT) {
                                 subscribeToProduct(toProductIdentifier, fromProductIdentifier)
                             }
-                            emit(NetworkResult.Error(ApiError.UnexpectedError))
                         }
                     }
                 }
@@ -138,9 +138,7 @@ internal class ScarletSocketProvider(
         repeat(times - 1) {
             try {
                 return block()
-            } catch (e: IOException) {
-                // todo: log error
-            }
+            } catch (e: IOException) { }
             delay(currentDelay)
             currentDelay = (currentDelay * factor).toLong().coerceAtMost(maxDelay)
         }

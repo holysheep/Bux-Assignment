@@ -1,6 +1,7 @@
 package com.assignment.core.data.di
 
 import android.app.Application
+import android.content.Context
 import com.assignment.core.BuildConfig
 import com.assignment.core.BuildConfig.TOKEN
 import com.assignment.core.data.Constants
@@ -12,6 +13,7 @@ import com.assignment.core.data.Constants.HEADER_ACCEPT_LANGUAGE
 import com.assignment.core.data.Constants.HEADER_AUTH
 import com.assignment.core.data.Constants.MIME_TYPE
 import com.assignment.core.data.Constants.TOKEN_ACCESS
+import com.assignment.core.data.service.RestService
 import com.assignment.core.data.utils.FlowStreamAdapter
 import com.squareup.moshi.KotlinJsonAdapterFactory
 import com.squareup.moshi.Moshi
@@ -23,16 +25,20 @@ import com.tinder.scarlet.retry.ExponentialWithJitterBackoffStrategy
 import com.tinder.scarlet.websocket.okhttp.newWebSocketFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 val networkModule = module {
-    single { provideOkHttpClient() }
+    single { provideOkHttpClient(androidContext()) }
     single {
         provideRetrofit(
-            okHttpClient = get()
+            okHttpClient = get(),
+            moshi = get()
         )
     }
+    single { provideRetrofitService(retrofit = get()) }
     single { provideMoshi() }
 
     single {
@@ -51,7 +57,7 @@ val networkModule = module {
     single { provideBackOffStrategy() }
 }
 
-private fun provideOkHttpClient(): OkHttpClient {
+private fun provideOkHttpClient(context: Context): OkHttpClient {
     return OkHttpClient
         .Builder()
         .addInterceptor(
@@ -63,8 +69,8 @@ private fun provideOkHttpClient(): OkHttpClient {
         .addInterceptor { chain ->
             val token = TOKEN_ACCESS.format(TOKEN)
             val newRequest = chain.request().newBuilder()
-                .addHeader(HEADER_ACCEPT, ACCEPT_LANGUAGE)
-                .addHeader(HEADER_ACCEPT_LANGUAGE, MIME_TYPE)
+                .addHeader(HEADER_ACCEPT, MIME_TYPE)
+                .addHeader(HEADER_ACCEPT_LANGUAGE, ACCEPT_LANGUAGE)
                 .addHeader(HEADER_AUTH, token)
                 .build()
             chain.proceed(newRequest)
@@ -72,12 +78,20 @@ private fun provideOkHttpClient(): OkHttpClient {
         .build()
 }
 
-private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+private fun provideRetrofit(
+    okHttpClient: OkHttpClient,
+    moshi: Moshi
+): Retrofit {
     return Retrofit.Builder()
         .baseUrl(BuildConfig.API_BASE_URL)
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .client(okHttpClient)
         .build()
 }
+
+private fun provideRetrofitService(retrofit: Retrofit): RestService =
+    retrofit.create(RestService::class.java)
+
 
 private fun provideScarlet(
     moshi: Moshi,

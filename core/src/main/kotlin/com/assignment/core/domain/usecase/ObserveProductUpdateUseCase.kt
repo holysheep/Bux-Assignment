@@ -1,11 +1,11 @@
 package com.assignment.core.domain.usecase
 
-import com.assignment.core.data.provider.ScarletSocketProvider
 import com.assignment.core.domain.model.NetworkResult
 import com.assignment.core.domain.model.update.RealtimeUpdateEvent
+import com.assignment.core.domain.provider.WebSocketProvider
 import kotlinx.coroutines.flow.Flow
 
-internal class ObserveProductUpdateUseCase(private val provider: ScarletSocketProvider) :
+internal class ObserveProductUpdateUseCase(private val provider: WebSocketProvider) :
     UseCase.RetrieveParamsFlowUseCase<ObserveProductUpdateUseCase.Params, RealtimeUpdateEvent> {
 
     override fun execute(params: Params): Flow<NetworkResult<RealtimeUpdateEvent>> {

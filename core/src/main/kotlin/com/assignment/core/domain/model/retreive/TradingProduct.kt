@@ -4,8 +4,6 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import java.math.BigDecimal
 
-// todo: check null possibilities
-
 @JsonClass(generateAdapter = true)
 internal data class TradingProduct(
     val symbol: String,
