@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.assignment.core.databinding.FragmentProductRealtimeBinding
+import com.assignment.core.presentation.base.BaseFragment
 import com.assignment.core.presentation.viewmodel.ProductRealtimeViewModel
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
-class ProductRealtimeFragment : Fragment() {
+class ProductRealtimeFragment : BaseFragment() {
     private val viewModel: ProductRealtimeViewModel by stateViewModel()
     private lateinit var binding: FragmentProductRealtimeBinding
 

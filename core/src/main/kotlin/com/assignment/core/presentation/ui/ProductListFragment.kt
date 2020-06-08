@@ -14,10 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.assignment.core.R
 import com.assignment.core.databinding.FragmentProductListBinding
 import com.assignment.core.domain.model.retreive.TradingProduct
+import com.assignment.core.presentation.base.BaseFragment
 import com.assignment.core.presentation.viewmodel.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
-internal class ProductListFragment : Fragment() {
+internal class ProductListFragment : BaseFragment() {
 
     private val viewModel: MainViewModel by stateViewModel()
     private lateinit var binding: FragmentProductListBinding
