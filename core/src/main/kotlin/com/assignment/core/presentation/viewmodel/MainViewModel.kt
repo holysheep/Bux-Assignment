@@ -1,25 +1,31 @@
 package com.assignment.core.presentation.viewmodel
 
+import android.content.res.Resources
 import androidx.lifecycle.liveData
 import com.assignment.core.domain.model.NetworkResult
-import com.assignment.core.domain.model.retreive.TradingProduct
 import com.assignment.core.domain.usecase.GetProductListUseCase
 import com.assignment.core.presentation.base.BaseViewModel
 
 internal class MainViewModel(
-    private val productListUseCase: GetProductListUseCase
+    private val productListUseCase: GetProductListUseCase,
+    private val resources: Resources
 ) : BaseViewModel() {
 
     val productList = liveData {
-        when (val list = productListUseCase.execute()) {
+        uiStateValue.value = UIState.LOADING
+        when (val result = productListUseCase.execute()) {
             is NetworkResult.Success -> {
-                emit(list.data)
+                val list = result.data
+                if (!list.isNullOrEmpty()) {
+                    uiStateValue.value = UIState.READY
+                    emit(list)
+                } else {
+                    uiStateValue.value = UIState.EMPTY
+                }
             }
             is NetworkResult.Error -> {
-                // todo: handle errors
+                errorStateValue.value = resources.getFormattedString(result.error)
             }
         }
     }
-
-    fun onProductClicked(product: TradingProduct) {}
 }

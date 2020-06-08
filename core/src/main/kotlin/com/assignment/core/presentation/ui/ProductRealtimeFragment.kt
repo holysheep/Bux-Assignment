@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.assignment.core.databinding.FragmentProductRealtimeBinding
 import com.assignment.core.presentation.base.BaseFragment
+import com.assignment.core.presentation.base.BaseViewModel.UIState
+import com.assignment.core.presentation.utils.snackbar
 import com.assignment.core.presentation.viewmodel.ProductRealtimeViewModel
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
 
 class ProductRealtimeFragment : BaseFragment() {
+
     private val viewModel: ProductRealtimeViewModel by stateViewModel()
     private lateinit var binding: FragmentProductRealtimeBinding
 
@@ -30,19 +33,30 @@ class ProductRealtimeFragment : BaseFragment() {
         with(viewModel) {
             productId?.let {
                 showProduct(productId = productId)
-            }
+            } ?: return
 
             tradingProduct.observe(viewLifecycleOwner,
                 Observer { product ->
-                    with(binding) {
-                        subtitle.text = product.title
-                        currency.text = product.currentPrice.currency
-                        price.text = product.currentPrice.amount.toPlainString() // format
+                    product?.let {
+                        with(binding) {
+                            subtitle.text = product.title
+                        }
                     }
+                }
+            )
+
+            uiState.observe(viewLifecycleOwner,
+                Observer { state ->
+                    binding.progressBar.visibility = if (state == UIState.LOADING)
+                        View.VISIBLE else View.GONE
+                    binding.emptyMessage.visibility =
+                        if (state == UIState.EMPTY) View.VISIBLE else View.GONE
                 })
 
-            webSocketState.observe(viewLifecycleOwner,
-                Observer { result -> })
+            errorState.observe(viewLifecycleOwner,
+                Observer {
+                    binding.root.snackbar(it.message)
+                })
         }
     }
 }
