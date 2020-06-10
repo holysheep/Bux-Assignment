@@ -12,23 +12,17 @@
 
     <string name="network_error">Connection to server is unavailable.</string>
     <string name="network_socket_error">Connection with subscription is broken. Attempt to reconnect…</string>
+    <string name="network_connectivity_limited_or_unavailable">Network connectivity limited or unavailable.</string>
+
     <string name="subscription_error">Subscription to product failed. Try again.</string>
 
     <string name="auth_token_error">Access Token is not valid or has expired.</string>
     <string name="auth_error">Authorization problem.</string>
     <string name="permission_error">You do not have sufficient permissions to perform this action.</string>
     <string name="unknown_error">An unexpected error has occurred.</string>
-
-    <string name="product_realtime_title">Google Inc. - Class C Capital Stock</string>
-    <string name="product_realtime_currency">$</string>
-    <string name="product_realtime_price">894</string>
-    <string name="product_realtime_price_fracture">.61</string>
-    <string name="name">+ %1$s %2$s %</string>
-    <string name="product_realtime_difference">%1$s (%2$s)</string>
-    <string name="product_item_name">TESLA</string>
     <string name="information_about_the_product_is_unavailable">Information about the product is unavailable</string>
-    <string name="network_connectivity_limited_or_unavailable">Network connectivity limited or unavailable.</string>
     <string name="product_list_is_unavailable">Product list is unavailable.</string>
-    <string name="retry">Retry</string>
+
+    <string name="product_realtime_difference">%1$s (%2$s)</string>
     <string name="past_day">Past day</string>
 </resources>

@@ -18,7 +18,6 @@ import com.assignment.core.data.service.RestService
 import com.assignment.core.data.service.SocketService
 import com.assignment.core.data.utils.FlowStreamAdapter
 import com.assignment.core.data.utils.MoshiAdapter
-import com.readystatesoftware.chuck.ChuckInterceptor
 import com.squareup.moshi.Moshi
 import com.tinder.scarlet.Lifecycle
 import com.tinder.scarlet.Scarlet
@@ -71,11 +70,9 @@ val networkModule = module {
 private fun provideOkHttpClient(context: Context): OkHttpClient {
     return OkHttpClient
         .Builder()
-        .addInterceptor(ChuckInterceptor(context))
         .connectTimeout(OKHTTP_CONNECT_TIMEOUT, TimeUnit.SECONDS)
         .readTimeout(OKHTTP_CONNECT_TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(OKHTTP_CONNECT_TIMEOUT, TimeUnit.SECONDS)
-        .pingInterval(7000, TimeUnit.SECONDS)
         .addInterceptor(
             HttpLoggingInterceptor()
                 .apply {

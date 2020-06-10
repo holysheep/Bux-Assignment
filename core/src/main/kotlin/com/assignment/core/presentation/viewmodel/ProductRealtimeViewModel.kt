@@ -29,7 +29,7 @@ internal class ProductRealtimeViewModel(
     private val resources: Resources
 ) : BaseViewModel() {
 
-    private lateinit var tradingProduct: TradingProduct
+    private var tradingProduct : TradingProduct? = null
     val productTitle = MutableLiveData<String?>()
     val productPrice = MutableLiveData<String?>()
     val difference = MutableLiveData<String?>()
@@ -90,20 +90,28 @@ internal class ProductRealtimeViewModel(
                         is NetworkResult.Success -> {
                             val update = result.data?.body
                             update?.updatedPrice?.let { updatedPrice ->
-                                productPrice.value = formattedPrice(
-                                    currentProduct = tradingProduct,
-                                    amount = updatedPrice
-                                )
+                                if (tradingProduct != null) {
+                                    productPrice.value = tradingProduct?.let {
+                                        formattedPrice(
+                                            currentProduct = it,
+                                            amount = updatedPrice
+                                        )
+                                    }
 
-                                difference.value = formatPriceChange(priceChange(
-                                    currentAmount = updatedPrice,
-                                    closingAmount = tradingProduct.closingPrice.amount
-                                ))
+                                    difference.value = formatPriceChange(
+                                        priceChange(
+                                            currentAmount = updatedPrice,
+                                            closingAmount = tradingProduct!!.closingPrice.amount
+                                        )
+                                    )
 
-                                percentageDifference.value = formatPercentage(priceChangePercentage(
-                                    currentAmount = updatedPrice,
-                                    closingAmount = tradingProduct.closingPrice.amount
-                                ))
+                                    percentageDifference.value = formatPercentage(
+                                        priceChangePercentage(
+                                            currentAmount = updatedPrice,
+                                            closingAmount = tradingProduct!!.closingPrice.amount
+                                        )
+                                    )
+                                }
                             }
                         }
                         is NetworkResult.Error -> {

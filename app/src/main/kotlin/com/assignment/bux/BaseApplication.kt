@@ -4,6 +4,7 @@ import android.app.Application
 import com.assignment.bux.di.appDataModule
 import com.assignment.bux.di.appDomainModule
 import com.assignment.bux.di.appViewModelModule
+import com.assignment.bux.di.dispatchers
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,7 +18,7 @@ class BaseApplication : Application() {
     }
 
     private fun initKoin() {
-        val appModules = appDataModule + appDomainModule + appViewModelModule
+        val appModules = appDataModule + appDomainModule + appViewModelModule + dispatchers
         startKoin {
             androidContext(this@BaseApplication)
             if (BuildConfig.DEBUG) {
