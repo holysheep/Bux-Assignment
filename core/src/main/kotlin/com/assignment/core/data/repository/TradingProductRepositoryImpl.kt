@@ -16,7 +16,7 @@ internal class TradingProductRepositoryImpl(
 ) : TradingProductRepository {
 
     override suspend fun getProductList(): NetworkResult<List<TradingProduct>> {
-        return handleRequest { restService.fetchProductList() }
+        return handleRequest { restService.fetchProductList().sortedBy { it.title } }
     }
 
     override suspend fun getProductById(productId: String): NetworkResult<TradingProduct> {
@@ -30,14 +30,14 @@ internal class TradingProductRepositoryImpl(
             val httpError = Failure.HttpError(ex)
             NetworkResult.Error(parseApiErrorMessage(httpError))
         } catch (ex: Exception) {
-            NetworkResult.Error(Failure.NetworkError(ex))
+            retryConnection { handleRequest(func) }
         }
     }
 
     private fun parseApiErrorMessage(error: Failure.HttpError): Failure {
         val apiErrorMessage = moshi.adapter(ErrorMessage::class.java)
         error.serverErrorBody?.let {
-            return when (apiErrorMessage.fromJson(it)?.body?.errorCode) {
+            return when (apiErrorMessage.fromJson(it)?.errorCode) {
                 ErrorCodes.AUTH_007,
                 ErrorCodes.AUTH_008 -> Failure.NotValidTokenError
                 ErrorCodes.AUTH_009,
