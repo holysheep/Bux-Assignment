@@ -10,7 +10,7 @@ internal data class TradingProduct(
     @Json(name = "securityId") val productId: String,
     @Json(name = "displayName") val title: String,
     val currentPrice: Price,
-    val closingPrice: Price?
+    val closingPrice: Price
 )
 
 @JsonClass(generateAdapter = true)

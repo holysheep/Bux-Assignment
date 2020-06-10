@@ -8,8 +8,7 @@ internal class GetProductUseCase(private val repository: TradingProductRepositor
     UseCase.RetrieveParamsUseCase<GetProductUseCase.Params, TradingProduct> {
 
     override suspend fun execute(params: Params): NetworkResult<TradingProduct> {
-//      todo  if (params.productId) is valid
-       return repository.getProductById(params.productId)
+        return repository.getProductById(params.productId)
     }
 
     class Params(val productId: String) : UseCase.Params()

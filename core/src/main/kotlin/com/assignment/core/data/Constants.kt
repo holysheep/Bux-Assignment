@@ -12,8 +12,12 @@ internal object Constants {
     const val MIME_TYPE = "application/json"
     const val ACCEPT_LANGUAGE = "nl-NL,en;q=0.8"
 
-    // Retry
-    const val BACKOFF_DURATION_BASE = 5000L
-    const val BACKOFF_DURATION_MAX = 5000L
+    const val IDENTIFIER_BASE = "trading.product.%s"
+
+    // Retry connection
+    const val BACKOFF_DURATION_BASE = 1000L
+    const val BACKOFF_DURATION_MAX = 1000L
     const val RETRY_ATTEMPTS_AMOUNT = 3
+    const val OKHTTP_CONNECT_TIMEOUT = 20L
+    const val ONE_SECOND_DELAY = 1000L
 }

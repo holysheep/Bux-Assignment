@@ -7,7 +7,7 @@ import java.math.BigDecimal
 @JsonClass(generateAdapter = true)
 internal data class RealtimeUpdateEvent(
     @Json(name = "t") val type: UpdateEventType,
-    val body: UpdateEventBody
+    @Json(name = "body") val body: UpdateEventBody
 )
 
 @JsonClass(generateAdapter = true)
