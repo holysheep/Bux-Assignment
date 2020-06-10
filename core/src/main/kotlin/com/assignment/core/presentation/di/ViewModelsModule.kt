@@ -8,7 +8,10 @@ import org.koin.dsl.module
 
 val viewModelsModule = module {
     viewModel {
-        MainViewModel(productListUseCase = get())
+        MainViewModel(
+            productListUseCase = get(),
+            resources = androidContext().resources
+        )
     }
     viewModel {
         ProductRealtimeViewModel(

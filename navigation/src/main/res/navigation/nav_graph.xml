@@ -16,7 +16,7 @@
     <fragment
         android:id="@+id/productRealtimeFragment"
         android:name="com.assignment.core.presentation.ui.ProductRealtimeFragment"
-        android:label="@string/product_fragment_label">
+        android:label="">
         <argument
             android:name="productId"
             app:argType="string" />

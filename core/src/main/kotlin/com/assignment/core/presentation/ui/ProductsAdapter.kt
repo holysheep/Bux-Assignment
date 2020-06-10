@@ -24,7 +24,8 @@ internal class ProductsAdapter(private val listener: ProductAdapterListener) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: TradingProduct) {
-            binding.name.text = product.title
+            binding.product = product
+            binding.executePendingBindings();
         }
 
         companion object {
@@ -41,13 +42,13 @@ internal class ProductsAdapter(private val listener: ProductAdapterListener) :
             override fun areItemsTheSame(
                 oldItem: TradingProduct,
                 newItem: TradingProduct
-            ): Boolean = oldItem == newItem
+            ): Boolean = oldItem.productId == newItem.productId
 
             override fun areContentsTheSame(
                 oldItem: TradingProduct,
                 newItem: TradingProduct
             ): Boolean =
-                oldItem.symbol == newItem.symbol
+                oldItem == newItem
         }
     }
 }

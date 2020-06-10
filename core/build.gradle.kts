@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
     id(Plugins.androidLibrary)
+    kotlin("android")
+    kotlin("kapt")
 }
 
 apply("$rootDir/common.gradle")
@@ -28,6 +30,7 @@ dependencies {
     api(Libraries.lifecycleLiveData)
     api(Libraries.lifecycleExtensions)
     api(Libraries.lifecycleCompiler)
+    kapt(Libraries.databinding)
 
     api(Libraries.okHttp)
     api(Libraries.loggingInterceptor)
@@ -35,8 +38,8 @@ dependencies {
     api(Libraries.retrofit)
     api(Libraries.retrofitMoshiConverter)
     api(Libraries.moshi)
-    api(Libraries.moshiKotlin)
     api(Libraries.moshiAdapters)
+    kapt(Libraries.moshiCodeGen)
 
     api(Libraries.scarlet)
     api(Libraries.scarletWebSocket)

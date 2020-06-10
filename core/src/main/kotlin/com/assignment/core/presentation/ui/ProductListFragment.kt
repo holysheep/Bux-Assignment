@@ -1,39 +1,41 @@
 package com.assignment.core.presentation.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.assignment.core.R
 import com.assignment.core.databinding.FragmentProductListBinding
 import com.assignment.core.domain.model.retreive.TradingProduct
-import com.assignment.core.presentation.base.BaseFragment
-import com.assignment.core.presentation.base.BaseViewModel
+import com.assignment.core.infrastructure.ConnectivityOnLifecycleProvider
+import com.assignment.core.presentation.databinding.viewBinding
+import com.assignment.core.presentation.utils.snackBar
 import com.assignment.core.presentation.viewmodel.MainViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
-import com.assignment.core.presentation.base.BaseViewModel.UIState
 
-internal class ProductListFragment : BaseFragment() {
+internal class ProductListFragment : Fragment(R.layout.fragment_product_list) {
 
     private val viewModel: MainViewModel by stateViewModel()
-    private lateinit var binding: FragmentProductListBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentProductListBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    private val binding: FragmentProductListBinding by viewBinding()
+    private val connectivityProvider: ConnectivityOnLifecycleProvider by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        binding.networkIsAvailable = true
+        lifecycleScope.launchWhenStarted {
+            connectivityProvider.observeConnectivity { isConnected ->
+                binding.networkIsAvailable = isConnected
+            }
+        }
 
         val listAdapter = ProductsAdapter(object : ProductAdapterListener {
             override fun onProductClicked(product: TradingProduct) {
@@ -51,6 +53,8 @@ internal class ProductListFragment : BaseFragment() {
                     addItemDecoration(divider)
                 }
                 adapter = listAdapter
+                isNestedScrollingEnabled = false
+                setItemViewCacheSize(30)
                 setHasFixedSize(true)
             }
         }
@@ -63,12 +67,9 @@ internal class ProductListFragment : BaseFragment() {
                     }
                 })
 
-            uiState.observe(viewLifecycleOwner,
-                Observer { state ->
-                    binding.progressBar.visibility = if (state == UIState.LOADING)
-                        View.VISIBLE else View.GONE
-                    binding.emptyMessage.visibility =
-                        if (state == UIState.EMPTY) View.VISIBLE else View.GONE
+            errorState.observe(viewLifecycleOwner,
+                Observer {
+                    binding.root.snackBar(it.message)
                 })
         }
     }

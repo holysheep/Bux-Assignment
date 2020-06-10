@@ -5,6 +5,8 @@ import androidx.lifecycle.liveData
 import com.assignment.core.domain.model.NetworkResult
 import com.assignment.core.domain.usecase.GetProductListUseCase
 import com.assignment.core.presentation.base.BaseViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onStart
 
 internal class MainViewModel(
     private val productListUseCase: GetProductListUseCase,
@@ -12,20 +14,24 @@ internal class MainViewModel(
 ) : BaseViewModel() {
 
     val productList = liveData {
-        uiStateValue.value = UIState.LOADING
-        when (val result = productListUseCase.execute()) {
-            is NetworkResult.Success -> {
-                val list = result.data
-                if (!list.isNullOrEmpty()) {
-                    uiStateValue.value = UIState.READY
-                    emit(list)
-                } else {
-                    uiStateValue.value = UIState.EMPTY
+        productListUseCase
+            .execute()
+            .onStart { uiState.value = UIState.LOADING }
+            .collect { result ->
+                when (result) {
+                    is NetworkResult.Success -> {
+                        val list = result.data
+                        if (!list.isNullOrEmpty()) {
+                            uiState.value = UIState.READY
+                            emit(list)
+                        } else {
+                            uiState.value = UIState.EMPTY
+                        }
+                    }
+                    is NetworkResult.Error -> {
+                        errorStateValue.value = resources.getFormattedString(result.error)
+                    }
                 }
             }
-            is NetworkResult.Error -> {
-                errorStateValue.value = resources.getFormattedString(result.error)
-            }
-        }
     }
 }
