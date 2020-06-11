@@ -9,7 +9,6 @@ import com.tinder.scarlet.lifecycle.LifecycleRegistry
 
 internal class WebsocketLifecycleRegistryProvider(private val lifecycleRegistry: LifecycleRegistry) :
     LifecycleRegistryProvider,
-    DefaultLifecycleObserver,
     Lifecycle by lifecycleRegistry {
 
     override fun setWebSocketLifecycleObserver(lifecycleOwner: LifecycleOwner,
