@@ -21,7 +21,7 @@ internal class WebsocketLifecycleRegistryProvider(private val lifecycleRegistry:
         override fun onResume(owner: LifecycleOwner) {
             super.onResume(owner)
             lifecycleRegistry.onNext(Lifecycle.State.Started)
-            doOnRestart
+            doOnRestart()
         }
 
         override fun onPause(owner: LifecycleOwner) {
