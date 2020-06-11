@@ -25,13 +25,17 @@ class ProductRealtimeFragment : Fragment(R.layout.fragment_product_realtime) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val productId = arguments?.getString("productId")
-        lifecycleProvider.setWebSocketLifecycleObserver(this)
+        lifecycleProvider.setWebSocketLifecycleObserver(
+            lifecycleOwner = this,
+            doOnRestart = {
+                resubscribeToProduct(productId)
+            })
 
         binding.networkIsAvailable = true
         lifecycleScope.launchWhenStarted {
             connectivityProvider.observeConnectivity { isConnected ->
                 binding.networkIsAvailable = isConnected
-                productId?.let { viewModel.listenForProductUpdate(it) }
+                resubscribeToProduct(productId)
             }
         }
 
@@ -48,5 +52,9 @@ class ProductRealtimeFragment : Fragment(R.layout.fragment_product_realtime) {
                     binding.root.snackBar(it.message)
                 })
         }
+    }
+
+    private fun resubscribeToProduct(productId: String?) {
+        productId?.let { viewModel.listenForProductUpdate(it) }
     }
 }
