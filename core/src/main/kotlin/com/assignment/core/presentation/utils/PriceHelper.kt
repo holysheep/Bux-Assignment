@@ -54,7 +54,7 @@ object PriceHelper {
         }
     }
 
-    private fun rounded(number: BigDecimal): BigDecimal =
+    fun rounded(number: BigDecimal): BigDecimal =
         number.setScale(PERCENT_SCALE, ROUNDING_MODE)
 
     private val ONE_HUNDRED = BigDecimal("100")

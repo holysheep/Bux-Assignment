@@ -27,3 +27,8 @@ object Versions {
     const val moshi = "1.9.2"
     const val scarlet = "0.1.10"
 }
+
+object TestVersions {
+    const val junit = "4.13"
+    const val truth = "1.0.1"
+}

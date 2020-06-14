@@ -55,6 +55,9 @@ object Libraries {
         "com.tinder.scarlet:lifecycle-android:${Versions.scarlet}"
     const val scarletAdapterCoroutine =
         "com.tinder.scarlet:stream-adapter-coroutines:${Versions.scarlet}"
+}
 
-    // Test todo
+object TestLibraries {
+    const val junit = "junit:junit:${TestVersions.junit}"
+    const val truth = "com.google.truth:truth:${TestVersions.truth}"
 }

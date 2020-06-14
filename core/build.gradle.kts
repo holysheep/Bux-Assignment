@@ -46,4 +46,8 @@ dependencies {
     api(Libraries.scarletLifecycle)
     api(Libraries.scarletMessageAdapter)
     api(Libraries.scarletAdapterCoroutine)
+
+    // Test
+    testImplementation(TestLibraries.junit)
+    testImplementation(TestLibraries.truth)
 }
